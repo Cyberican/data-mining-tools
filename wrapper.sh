@@ -1,8 +1,14 @@
 #!/bin/bash
 
-input_pdf="richard_jackson_lebenslauf.pdf"
+src_pdf=$(ls buckets/new | head -n 10)
+target_dir="buckets/queue"
 
-ocrmypdf --skip-text -l eng+deu --rotate-pages --deskew \
---title "conversion $(date '+%s')" --jobs 4 \
---output-type pdfa $input_pdf \
-output_searchable.pdf -f
+printf "${input_pdf[@]}\n"
+
+for pdf_doc in ${input_pdf[@]}
+do
+	ocrmypdf --skip-text -l eng+deu --rotate-pages --deskew \
+	--title "conversion $(date '+%s')" --jobs 4 \
+	--output-type pdfa "${pdf_doc}" \
+	${target_dir}/${pdf_doc} -f
+done
